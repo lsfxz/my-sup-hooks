@@ -1,6 +1,6 @@
-## can probably easily be modified to not actually move any files on the disk —
-## but I prefer it that way, since that way things are "sorted" when accessing
-## my mail via other means (eg. webmail).
+# can probably easily be modified to not actually move any files on the disk -
+# but I prefer it that way, since that way things are "sorted" when accessing
+# my mail via other means (eg. webmail).
 
 require 'fileutils'
 
@@ -17,7 +17,7 @@ def mark_and_move(msg, where, cmd)
   debug "storing message at source: #{where}"
   stored = where.store_message(msg.date, msg.from.email) do |f|
     msg.each_raw_message_line { |l| f.puts l }
-    debug "New Mail stored at: #{f::path}"
+    debug "New Mail stored at: #{f::path}" #this might work with f.path. I'll try someday.
   end
 
   ## system "bogofilter -l #{cmd} -I #{location}"
@@ -28,7 +28,8 @@ def mark_and_move(msg, where, cmd)
   debug "deleting message at source: #{msgsource}"
   location = "#{msg.source.to_s.gsub('maildir:/', '/')}/#{msg.source_info}"  ##update location, necc? TODO
   if stored
-    log "Couldn't delete #{location}" unless FileUtils.remove_file(location)
+    log "Couldn't delete #{location}" unless FileUtils.remove_file(location, force=true)
+    # force = true so it doesn't crash horribly.. but instead logs "couldn't delete"
     # log "Couldn't delete #{location}" unless FileUtils.remove_file(location) or FileUtils.remove_file(location.gsub('/new','/cur') or FileUtils.remove_file(location.gsub('/new','/tmp') )  #TODO cur/new? necessary?
   elsif !stored
     log "Message couldn't be copied successfully!"
