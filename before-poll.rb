@@ -1,5 +1,6 @@
 say 'Running mbsync...'
-system 'mbsync -a -q'
+# system 'mbsync -a -q'
+system 'mbsync -a 2>&1 | tee >(>>~/.sup/mbsynclog )'
 #system "mbsync -a 2>&1 | awk '{ print strftime(), $0; fflush() }' >> /home/lsfxz/.sup/mbsyncsuplog.log"
 
 maildr = "#{Dir.home}/Mail"

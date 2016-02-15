@@ -17,16 +17,19 @@ def mark_and_move(msg, where, cmd)
   debug "storing message at source: #{where}"
   stored = where.store_message(msg.date, msg.from.email) do |f|
     msg.each_raw_message_line { |l| f.puts l }
-    debug "File: #{f::path}"
+    debug "New Mail stored at: #{f::path}"
   end
 
   ## system "bogofilter -l #{cmd} -I #{location}"
+  location = "#{msg.source.to_s.gsub('maildir:/', '/')}/#{msg.source_info}"  ##update location, necc? TODO
   system cmd + "#{location}"
   debug "executed #{cmd} #{location}"
   msgsource = msg.source
   debug "deleting message at source: #{msgsource}"
+  location = "#{msg.source.to_s.gsub('maildir:/', '/')}/#{msg.source_info}"  ##update location, necc? TODO
   if stored
-    log "Couldn't delete #{location}" unless FileUtils.remove_file(location) or FileUtils.remove_file(location.gsub('/new','/cur'))  #TODO cur/new? necessary?
+    log "Couldn't delete #{location}" unless FileUtils.remove_file(location)
+    # log "Couldn't delete #{location}" unless FileUtils.remove_file(location) or FileUtils.remove_file(location.gsub('/new','/cur') or FileUtils.remove_file(location.gsub('/new','/tmp') )  #TODO cur/new? necessary?
   elsif !stored
     log "Message couldn't be copied successfully!"
   end
