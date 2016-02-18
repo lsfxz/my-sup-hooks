@@ -42,9 +42,9 @@ def mark_and_move(msg, where, cmd)
 end
 
 
-source_inbox_uri = 'maildir:/home/lsfxz/Mail/INBOX'
-source_spam_uri = 'maildir:/home/lsfxz/Mail/Spam'
-source_unsure_uri = 'maildir:/home/lsfxz/Mail/Unsure'
+source_inbox_uri = "maildir:#{Dir.home}/Mail/INBOX"
+source_spam_uri = "maildir:#{Dir.home}/Mail/Spam"
+source_unsure_uri = "maildir:#{Dir.home}/Mail/Unsure"
 source_inbox = SourceManager.source_for(source_inbox_uri) or fail 'source_inbox not found'
 source_spam = SourceManager.source_for(source_spam_uri) or fail 'source_spam not found'
 
