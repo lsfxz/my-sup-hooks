@@ -1,5 +1,5 @@
 require 'socket'
-MYHOSTNAME = Socket.gethostname
+MYHOSTNAME ||= Socket.gethostname
 
 maildr = "#{Dir.home}/Mail"
 #directly writing to new subfolder (for unsure), because all this happens before the MUA (-> sup) polls — so tmp seems unneccessary
