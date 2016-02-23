@@ -1,13 +1,16 @@
+require 'socket'
+MYHOSTNAME = Socket.gethostname
+
+maildr = "#{Dir.home}/Mail"
+#directly writing to new subfolder (for unsure), because all this happens before the MUA (-> sup) polls — so tmp seems unneccessary
+inboxdr = maildr + '/INBOX/new'
+spamdr = maildr + '/Spam/cur'
+unsuredr = maildr + '/Unsure/new'
+
 say 'Running mbsync...'
 # system 'mbsync -a -q'
 system 'mbsync -a -q'
 # system "mbsync -a 2>&1 | awk '{ print strftime(), $0; fflush() }' >> /home/lsfxz/.sup/mbsyncsuplog.log"
-
-maildr = "#{Dir.home}/Mail"
-#directly writing to new subfolders, because all this happens before the MUA (-> sup) polls — so tmp seems unneccessary
-inboxdr = maildr + '/INBOX/new'
-spamdr = maildr + '/Spam/cur'
-unsuredr = maildr + '/Unsure/new'
 
 def new_maildir_basefn #shamelessly ripped out of maildir.rb's guts...
   Kernel::srand()
